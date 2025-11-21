@@ -110,3 +110,8 @@ body {
 #rightF {
     margin: 0 auto;
 }
+
+.hoverImg {
+    background-color: rgb(172, 188, 202);
+    height: 40px;
+}
