@@ -50,7 +50,6 @@ function checkOperator(targetId) {
         if (name === targetId) {
             return true
         }
-        else continue
     }
     return false
 }
@@ -60,7 +59,6 @@ function isNumber(targetId) {
         if (name === targetId) {
             return true
         }
-        else continue
     }
     return false
 }
@@ -75,8 +73,11 @@ function check(targetId) {
     else if (isNumber(targetId) && resultDisplayed) {
         return 'newDigit'
     }
-    else if (checkOperator(targetId) && param0 != '') {
+    else if (checkOperator(targetId) && param0 != '' && param1 === '') {
         return 'operator'
+    }
+    else if(checkOperator(targetId) && param1 != '') {
+        return 'concatenateOperation'
     }
     else if (targetId === 'equal') {
         return 'equal'
@@ -107,6 +108,20 @@ function addOperator(targetId) {
         param1 = ''
         resultDisplayed = false
     }
+    display.textContent = `${param0} ${operator} ${param1}`
+}
+
+function concatenateOp(targetId) {
+    if (param1 === '0' && operator === 'divide') {
+        display.textContent = 'Impossible output'
+        param0 = ''
+        param1 = ''
+        operator = ''
+        return
+    }
+    param0 = String(mathObj[operator](param0, param1))
+    param1 = ''
+    operator = targetId
     display.textContent = `${param0} ${operator} ${param1}`
 }
 
@@ -144,6 +159,9 @@ function inputManager(targetId) {
     }
     else if (returnedValue === 'operator') {
         addOperator(targetId)
+    }
+    else if (returnedValue === 'concatenateOperation') {
+        concatenateOp(targetId)
     }
     else if (returnedValue === 'param1') {
         addParam1(targetId)
